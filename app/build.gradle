@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.kostikov.marvelgallery"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "PUBLIC_KEY", "\"${marvelPublicKey}\"")
+        buildConfigField("String", "PRIVATE_KEY", "\"${marvelPrivateKey}\"")
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    // Android Support Library
+    implementation "com.android.support:appcompat-v7:$android_support_version"
+    implementation "com.android.support:design:$android_support_version"
+    implementation "com.android.support:recyclerview-v7:$android_support_version"
+    // Constraint layout
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    // RxAndroid
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    // Retrofit
+    implementation(["com.squareup.retrofit2:retrofit:$retrofit_version",
+                    "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
+                    "com.squareup.retrofit2:converter-gson:$retrofit_version",
+                    "com.squareup.okhttp3:okhttp:$okhttp_version",
+                    "com.squareup.okhttp3:logging-interceptor:$okhttp_version"])
+
+
+    implementation 'com.google.dagger:dagger:2.17'
+    kapt 'com.google.dagger:dagger-compiler:2.17'
+}
