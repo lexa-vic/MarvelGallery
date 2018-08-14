@@ -1,6 +1,6 @@
 package com.kostikov.marvelgallery.di
 
-import com.kostikov.marvelgallery.MainActivity
+import com.kostikov.marvelgallery.ui.characters.MainActivity
 import dagger.Subcomponent
 
 /**

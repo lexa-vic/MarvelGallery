@@ -1,4 +1,4 @@
-package com.kostikov.marvelgallery.adapters
+package com.kostikov.marvelgallery.ui.characters.adapters
 
 /**
  * @author Kostikov Aleksey.

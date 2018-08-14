@@ -1,4 +1,4 @@
-package com.kostikov.marvelgallery.adapters
+package com.kostikov.marvelgallery.ui.characters.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

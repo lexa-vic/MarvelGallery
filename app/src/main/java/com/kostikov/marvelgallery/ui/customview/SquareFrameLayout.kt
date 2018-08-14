@@ -1,4 +1,4 @@
-package com.kostikov.marvelgallery.view
+package com.kostikov.marvelgallery.ui.customview
 
 import android.content.Context
 import android.util.AttributeSet
