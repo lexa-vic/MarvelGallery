@@ -2,9 +2,11 @@ package com.kostikov.marvelgallery.ui.characters
 
 import android.arch.lifecycle.ViewModel
 import com.kostikov.marvelgallery.data.MarvelRepository
-import com.kostikov.marvelgallery.model.MarvelCharacter
-import io.reactivex.Single
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.processors.BehaviorProcessor
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 /**
@@ -12,15 +14,31 @@ import io.reactivex.schedulers.Schedulers
  */
 class CharactersViewModel(private val charactersRepository: MarvelRepository): ViewModel() {
 
+    val disposables = CompositeDisposable()
+
+    private val characterListProcessor: BehaviorProcessor<CharactersViewState> = BehaviorProcessor.create()
 
 
-    val characters = mutableListOf(
-            MarvelCharacter(name = "3-D Man", imageUrl = "http://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784.jpg"),
-            MarvelCharacter(name = "Abomination (Emil Blonsky)", imageUrl = "http://i.annihil.us/u/prod/marvel/i/mg/9/50/4ce18691cbf04.jpg")
-    )
+    fun observeViewState(): Flowable<CharactersViewState> {
+        return characterListProcessor
+    }
 
-    fun getCharactersList(): Single<List<MarvelCharacter>> =
+    fun requestCharacterList(){
         charactersRepository.getAllCharacters()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    characterListProcessor.onNext(CharacterLoading(true))  }
+                .doOnError { characterListProcessor.onNext(CharacterError(it)) }
+                .subscribeBy {
+                    characterListProcessor.onNext(CharacterLoading(false))
+                    characterListProcessor.onNext(CharacterSuccess(it)) }
+    }
+
+
+    fun onDestroyViewModel(){
+        disposables.clear()
+    }
+
+
 }
